@@ -11,11 +11,15 @@ const axios = require('axios');
 const { spawn, exec, execSync } = require("child_process");
 const moment = require("moment-timezone");
 const { tiktokdl, tiktokdlv2, tiktokdlv3 } = require("@bochilteam/scraper");
+const Tiktok = require("tiktokxd")
+const { TTScraper } = require('tiktok-scraper-ts');
+const TikTokScraper = require('tiktok-scraper-ts');
 const { EmojiAPI } = require("emoji-api");
 const { addBalance } = require("./lib/limit.js");
 const { smsg, formatp, tanggal, GIFBufferToVideoBuffer, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom, fetchBuffer } = require('./lib/myfunc')
 const _ = require("lodash");
 const yargs = require("yargs/yargs");
+
 
 
 let kaitime = moment.tz('Europe/Berlin').format('HH:mm:ss');
@@ -270,7 +274,8 @@ module.exports = Phoenix = async (Phoenix, m, chatUpdate, store) => {
 ///////////////////////////
 
 const checkSpam = require ("./antispam.js");
-
+console.log("Nachricht:", m.text);
+console.log("Prefix:", isCmd);
 // Anti-Spam-Logik
 const isSpam = await checkSpam(isCmd); 
 if (isSpam) {
@@ -4553,24 +4558,120 @@ _Click the button below to download_`
     
 ////
 
+case 'tt':
+  if (isBan) return reply(mess.banned);
+  if (isBanChat) return reply(mess.bangc);
+  if (!q) return m.reply(`Beispiel: ${prefix + command} Link`);
+  const url = q.match(/(https?:\/\/[^\s]+)/)?.[0]; 
+  
+  // Überprüfe, ob die URL vorhanden und gültig ist
+  if (!url || !url.includes("tiktok")) return m.reply(`Ungültiger Link!`);
+  
+  try {
+    const TikTokScraperInstance = new TTScraper();
+    
+    // Versuche, die Videoinformationen abzurufen
+    const video = await TikTokScraperInstance.video(url, true); // true für Video ohne Wasserzeichen
+    
+    // Überprüfe, ob Video erfolgreich abgerufen wurde
+    if (video && video.downloadURL) {
+      // Sende das heruntergeladene Video an den Benutzer
+      await Phoenix.sendMessage(m.chat, {
+        video: { url: video.downloadURL },
+        caption: "➫ Downloaded by PHOENIX-BOT"
+      }, { quoted: m });
+    } else {
+      // Behandle den Fall, wenn das Video nicht gefunden wurde
+      m.reply("Video nicht gefunden oder konnte nicht heruntergeladen werden.");
+    }
+  } catch (error) {
+    // Behandle den Fehler, falls einer auftritt
+    console.error("Fehler:", error);
+    m.reply("Ein Fehler ist beim Verarbeiten der Anfrage aufgetreten.");
+  }
+  break;
 
 
-case 'tt': 
-
-if (isBan) return reply(mess.banned);
-if (isBanChat) return reply(mess.bangc);
-if (!q) return m.reply(`Example : ${prefix + command} link`);
-if (!q.includes("tiktok")) return m.reply(`Link Invalid!!`);
-m.reply()
-let url = (await fetch(args[1])).url
-let data = await tiktokdlv2(url)
-Phoenix.sendMessage(m.chat, { video: { url: data.video.no_watermark }, caption: "➫ 𝐆𝐞𝐧𝐞𝐫𝐚𝐭𝐞𝐝 𝐁𝐲 𝐏𝐇𝐎𝐄𝐍𝐈𝐗-𝐁𝐎𝐓"},  { quoted: m })
-     
-break
-       
 
 
 
+case 'tt2':
+    if (isBan) return reply(mess.banned);
+    if (isBanChat) return reply(mess.bangc);
+    if (!q) return m.reply(`Beispiel: ${prefix + command} Link`);
+    const path = require('path');
+    // Extrahiere die TikTok-URL aus der Nachricht
+    const tiktokUrl = q.trim();
+    if (!tiktokUrl || !tiktokUrl.includes("tiktok")) return m.reply(`Ungültiger TikTok-Link!`);
+
+    // Verwende das TikTokxD-Modul, um das Video herunterzuladen und Metadaten abzurufen
+    Tiktok.Downloader(tiktokUrl, {
+        version: "v2" // Version des Downloaders (v1, v2, v3)
+    }).then(async (result) => {
+        if (result && result.status === "success" && result.result && result.result.video) {
+            // Metadaten extrahieren
+            const videoData = result.result;
+            const author = videoData.author;
+            const statistics = videoData.statistics;
+
+            // Video-URL aus der Response extrahieren
+            const videoUrl = videoData.video;
+           
+
+            // Musik herunterladen und lokal speichern
+            
+            // Dateinamen für das gespeicherte Video erstellen
+            const videoFileName = `tiktok_video_${Date.now()}.mp4`;
+            const videoFilePath = path.join("./src/TikTok/", videoFileName);
+
+            // Video herunterladen und lokal speichern
+            await axios({ url: videoUrl, responseType: 'arraybuffer' }).then(response => fs.promises.writeFile(videoFilePath, response.data));
+           
+            // Sende das gespeicherte Video an den Benutzer
+            if (fs.existsSync(videoFilePath)) {
+                // Sende die heruntergeladenen Metadaten zusammen mit dem Video als Nachricht
+            await Phoenix.sendMessage(m.chat, {
+              video:  { url: videoFilePath},
+              caption:`*TiktokV2*\n\nAutor: ${author.nickname}\nLikes: ${statistics.likeCount}\nKommentare: ${statistics.commentCount}\nShares: ${statistics.shareCount}\n\n➫ *Downloaded by PHOENIX-BOT*`}, { quoted: m });
+
+        } else {
+            // Fehler beim Herunterladen des Videos oder keine Videoinformationen gefunden
+            m.reply("Fehler beim Herunterladen des TikTok-Videos oder keine Videoinformationen gefunden.");
+        }
+                fs.unlinkSync(videoFilePath);
+            } else {
+                m.reply("Fehler beim Herunterladen des TikTok-Videos.");
+            }
+            const videoData = result.result;
+            const musicUrl = videoData.music;
+            const musicFileName = `tiktok_music_${Date.now()}.mp3`;
+            const musicFilePath = path.join("./src/TikTok/", musicFileName);
+            await axios({ url: musicUrl, responseType: 'arraybuffer' }).then(response => fs.promises.writeFile(musicFilePath, response.data));
+
+            if (fs.existsSync(musicFilePath)) {
+
+              await  Phoenix.sendMessage(
+                m.chat,
+                {
+                  audio:  { url: musicFilePath},
+                  fileName: "tiktokaudio.mp3",
+                  mimetype: "audio/mpeg",
+                },
+                { quoted: m }
+              );
+
+            } else {
+              // Fehler beim Herunterladen des Videos oder keine Videoinformationen gefunden
+              m.reply("Fehler beim Herunterladen des TikTok-Videos oder keine Videoinformationen gefunden.");
+          }
+                  fs.unlinkSync(musicFilePath);
+              
+            
+    }).catch((error) => {
+        console.error("Fehler beim Herunterladen des TikTok-Videos:", error);
+        m.reply("Ein Fehler ist beim Herunterladen des TikTok-Videos aufgetreten.");
+    });
+    break;
 
 
 ////////

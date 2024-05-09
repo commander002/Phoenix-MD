@@ -2,12 +2,11 @@ const lastMessageTimes = new Map();
 const lastCommandTimes = new Map();
 
 // Funktion zur Überprüfung, ob eine Nachricht Spam ist
-async function checkSpam(m, prefix, isCmd) {
+async function checkSpam(m, prefix, Phoenix, chatUpdate, store) {
 
     const phoneNumber = m;
 
-    console.log("Nachricht:");
-    console.log("Prefix:", isCmd);
+    
 
 
     
