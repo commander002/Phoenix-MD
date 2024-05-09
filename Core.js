@@ -4561,7 +4561,7 @@ if (isBan) return reply(mess.banned);
 if (isBanChat) return reply(mess.bangc);
 if (!q) return m.reply(`Example : ${prefix + command} link`);
 if (!q.includes("tiktok")) return m.reply(`Link Invalid!!`);
-m.reply(wait)
+m.reply()
 let url = (await fetch(args[1])).url
 let data = await tiktokdlv2(url)
 Phoenix.sendMessage(m.chat, { video: { url: data.video.no_watermark }, caption: "➫ 𝐆𝐞𝐧𝐞𝐫𝐚𝐭𝐞𝐝 𝐁𝐲 𝐏𝐇𝐎𝐄𝐍𝐈𝐗-𝐁𝐎𝐓"},  { quoted: m })
