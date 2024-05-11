@@ -151,8 +151,7 @@ async function startPhoenix() {
   
 
 
-
-Phoenix.ev.on("messages.upsert", async (chatUpdate) => {
+  Phoenix.ev.on("messages.upsert", async (chatUpdate) => {
     try {
       mek = chatUpdate.messages[0];
       if (!mek.message) return;
@@ -164,16 +163,12 @@ Phoenix.ev.on("messages.upsert", async (chatUpdate) => {
       if (!Phoenix.public && !mek.key.fromMe && chatUpdate.type === "notify")
         return;
       if (mek.key.id.startsWith("BAE5") && mek.key.id.length === 16) return;
-  
-      
-  
       m = smsg(Phoenix, mek, store);
       require("./Core")(Phoenix, m, chatUpdate, store);
     } catch (err) {
       console.log(err);
     }
 });
-
 
 
   

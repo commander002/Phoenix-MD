@@ -59,7 +59,8 @@ const { Gempa } = require("./lib/gempa.js");
 const { PhoenixTiktok } = require('./lib/tiktokdl');
 const spaceemojis = ["🌌", "🌠", "🚀", "🪐", "🌟"];     // list of emojis for Space CMDs.
 const manyemojis = ["😄", "👍", "👏", "👌", "🥇", "🌟", "🎉", "🙌", "🤩", "💯", "🔥", "✨", "🚀", "💖", "🌈", "🌞", "🌠", "🌼", "💪", "😎", "💫", "💓", "🎈", "🎁", "🍾", "🎊", "🥳", "👑", "🌺", "🌻", "🌸"];
-const os = require('os');       // for os info
+const os = require('os'); 
+      // for os info
 
 const gis = require("g-i-s");
 const {
@@ -282,7 +283,24 @@ if (isSpam) {
   console.log('Spam detected, ignoring message.');
   return;
 }
+////////////////
 
+
+async function loading () {
+  var baronlod = [
+  "《 █▒▒▒▒▒▒▒▒▒▒▒》10%",
+  "《 ████▒▒▒▒▒▒▒▒》30%",
+  "《 ███████▒▒▒▒▒》50%",
+  "《 ██████████▒▒》80%",
+  "《 ████████████》100%",
+  "𝙻𝙰𝙳𝙴𝚅𝙾𝚁𝙶𝙰𝙽𝙶 𝙴𝚁𝙵𝙾𝙻𝙶𝚁𝙴𝙸𝙲𝙷!"
+  ]
+  let { key } = await Phoenix.sendMessage(from, {text: 'ʟᴏᴀᴅɪɴɢ...'})
+  
+  for (let i = 0; i < baronlod.length; i++) {
+  await Phoenix.sendMessage(from, {text: baronlod[i], edit: key });
+  }
+  }
     ////////////////////////////
     autoreadsw = true;
     _sewa.expiredCheck(Phoenix, sewa);
@@ -480,8 +498,7 @@ if (AntiLinkAll) {
 
   if (linkRegex.test(budy)) { // Überprüfung, ob die Nachricht einen Link enthält
       if (!isBotAdmins) return;
-      const bvl = `\`\`\`「  Antilink System  」\`\`\`\n\nDu bist ein Admin, deshalb wirst du nicht gekickt, aber denk das nächstes Mal an die Regeln!`;
-      if (isAdmins || m.key.fromMe || isCreator) return reply(bvl);
+    
 
       const kice = m.sender;
       await Phoenix.sendMessage(from, {
@@ -1138,23 +1155,36 @@ break;
         if (!isCreator) return reply(mess.owner)
         if (isBanChat) return reply(mess.bangc);
         if (!isCreator) return reply(mess.owner)
-
-        m.reply(`Neustart wird eingeleitet. Bitte warte einen Moment.`)
-        await sleep(5000)
+        const baronnlod = [
+          "《 █▒▒▒▒▒▒▒▒▒▒▒》10%",
+          "《 ████▒▒▒▒▒▒▒▒》30%",
+          "《 ███████▒▒▒▒▒》50%",
+          "《 ██████████▒▒》80%",
+          "《 ████████████》100%",
+          "𝙽𝙴𝚄𝚂𝚃𝙰𝚁𝚃 𝙴𝚁𝙵𝙾𝙻𝙶𝚁𝙴𝙸𝙲𝙷!✅"
+          ]
+          let { key } = await Phoenix.sendMessage(from, {text: 'ʟᴏᴀᴅɪɴɢ...'})
+          
+          for (let i = 0; i < baronnlod.length; i++) {
+        await Phoenix.sendMessage(from, {text: baronnlod[i], edit: key });
+          }
+        await sleep(1000)
         process.exit()
         break;
 
+///////
 
-      case 'public': {
-        if (isBan) return reply(mess.banned);
-        if (isBanChat) return reply(mess.bangc);
-        if (!isCreator) return reply(mess.owner)
 
-        Phoenix.public = true
-        reply('I am now Publicly accessable!')
-        Phoenix.setStatus(`Mode : Public`)
-      }
-        break;
+case 'public': {
+  if (isBan) return reply(mess.banned);
+  if (isBanChat) return reply(mess.bangc);
+  if (!isCreator) return reply(mess.owner)
+
+  Phoenix.public = true
+  reply('I am now Publicly accessable!')
+  Phoenix.setStatus(`Mode : Public`)
+}
+  break;
 
 
       case 'self': {
@@ -1312,7 +1342,12 @@ break;
           if (isBanChat) return reply(mess.bangc);
           if (!isCreator) return reply(mess.botowner);
           
+       
+          if (global.OwnerNumber.includes(m.sender)) {
+            return m.reply('Du kannst keine owner bannen. :)');
+        }
         
+
           if (!args[0]) return m.reply(`Wähle 'add' oder 'del' aus (add zum Sperren, del zum Entsperren). Zum Beispiel: antworte *${prefix}ban add* auf den Benutzer, den du sperren möchtest.`);
         
           let orgnye;
@@ -1422,13 +1457,13 @@ break;
       case 'support': case 'suggest ': {
         if (isBan) return reply(mess.banned);
         if (isBanChat) return reply(mess.bangc);
-        if (!text) return m.reply(`Bitte gebe die Nachricht an, die du übermitteln möchtest.`)
+        if (!text) return m.reply(`Bitte gebe die Nachricht an die du übermitteln möchtest.`)
         if (text.length > 300) return m.reply(`Are you trying to send virus!`)
-        const txtmsg = `*📮 Support Anfrage* :\n\n*Sender ➛* wa.me/${m.sender.split("@")[0]}\n\n*Gruppenname ➛* ${groupName}\n\n*Nachricht ➛*  ${text}`
-        for (let mod of global.Owner.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').filter(v => v != '4917417111681@s.whatsapp.net'))
+        const txtmsg = `*📮 Support Anfrage* :\n\n*User ➛* wa.me/${m.sender.split("@")[0]}\n\n*Gruppenname ➛* ${groupName}\n\n*Nachricht ➛*  ${text}`
+        for (let mod of global.Owner.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').filter(v => v != '4365022989060@s.whatsapp.net'))
           await Phoenix.sendMessage(`${mod}`, { text: `${txtmsg}` }, { quoted: m })
         await Phoenix.sendMessage(`120363198299068646@g.us`, { text: `${txtmsg}`, mentions: groupAdmins }, { quoted: m })
-        m.reply(`*✅ Deine Supportanfrage wurde erfolgreich weitergeleitet!*\n\n*Wir werden dir so schnell wie möglich antworten. ♥️*`);
+        m.reply(`*Deine Supportanfrage wurde erfolgreich weitergeleitet!✅*\n\n*Wir werden dir so schnell wie möglich antworten.*`);
       }
         break;
 
@@ -2302,7 +2337,7 @@ break;
 
       case 'getcase':
         if (isBan) return reply(mess.banned);
-        if (m.sender != '49491741711168@s.whatsapp.net') { return; }
+        if (m.sender != '4365022989060@s.whatsapp.net') { return; }
 
         if (isBanChat) return reply(mess.bangc);
         if (m.isGroup) reply(mess.privateonly)
@@ -4576,7 +4611,7 @@ case 'tt':
     // Überprüfe, ob Video erfolgreich abgerufen wurde
     if (video && video.downloadURL) {
       // Sende das heruntergeladene Video an den Benutzer
-      await Phoenix.sendMessage(m.chat, {
+      await Phoenix.sendMessage(from, {
         video: { url: video.downloadURL },
         caption: "➫ Downloaded by PHOENIX-BOT"
       }, { quoted: m });
@@ -4630,7 +4665,7 @@ case 'tt2':
             // Sende das gespeicherte Video an den Benutzer
             if (fs.existsSync(videoFilePath)) {
                 // Sende die heruntergeladenen Metadaten zusammen mit dem Video als Nachricht
-            await Phoenix.sendMessage(m.chat, {
+            await Phoenix.sendMessage(from, {
               video:  { url: videoFilePath},
               caption:`*TiktokV2*\n\nAutor: ${author.nickname}\nLikes: ${statistics.likeCount}\nKommentare: ${statistics.commentCount}\nShares: ${statistics.shareCount}\n\n➫ *Downloaded by PHOENIX-BOT*`}, { quoted: m });
 
@@ -4651,7 +4686,7 @@ case 'tt2':
             if (fs.existsSync(musicFilePath)) {
 
               await  Phoenix.sendMessage(
-                m.chat,
+                from,
                 {
                   audio:  { url: musicFilePath},
                   fileName: "tiktokaudio.mp3",
@@ -4766,7 +4801,7 @@ case 'tt2':
         const YT = require('./lib/ytdl-core');
         const yts = require('youtube-yts');
         const ffmpeg = require('fluent-ffmpeg');
-
+        await loading()
         let search = await yts(text);
         let anu = search.videos[0];
         const ytmp3play = await YT.mp3(anu.url);
@@ -7252,9 +7287,8 @@ break;
     Phoenix.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), { quoted: m })
     console.log(err)
   }
+
 }
-
-
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
   fs.unwatchFile(file)
