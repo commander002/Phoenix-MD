@@ -16,4 +16,6 @@ RUN npm install
 
 COPY . .
 
-CMD ["node", "."]
+EXPOSE 9000
+
+CMD ["npm", "start"]

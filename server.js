@@ -103,7 +103,19 @@ function handleServerError(error, res) {
 // Starte den Server
 app.listen(port, () => {
   console.log(`Server läuft auf http://localhost:${port}`);
+  if (opts['keepalive']) keepAlive()
 });
+
+function keepAlive() {
+  const url = `http://localhost:${port}`
+  if (/(\/\/|\.)undefined\./.test(url)) return
+  setInterval(
+    () => {
+      fetch(url).catch(console.error)
+    },
+    5 * 1000 * 60
+  )
+}
 
 async function startPhoenix() {
   console.log(
@@ -1164,6 +1176,8 @@ let isRunning = false
  * Startet eine JavaScript-Datei als Prozess.
  * @param {String} file Pfad zur Datei
  */
+
+
 function start(file) {
   console.log('Starting... Server 2.o Checker ')
   if (isRunning) return
