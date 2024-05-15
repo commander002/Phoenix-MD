@@ -100,21 +100,23 @@ function handleServerError(error, res) {
   }
 }
 
-// Starte den Server
+// Define default options
+const opts = {
+  keepalive: true // Assuming true as default value for keepalive
+};
+
+// Start the server
 app.listen(port, () => {
   console.log(`Server läuft auf http://localhost:${port}`);
-  if (opts['keepalive']) keepAlive()
+  if (opts['keepalive']) keepAlive();
 });
 
 function keepAlive() {
-  const url = `http://localhost:${port}`
-  if (/(\/\/|\.)undefined\./.test(url)) return
-  setInterval(
-    () => {
-      fetch(url).catch(console.error)
-    },
-    5 * 1000 * 60
-  )
+  const url = `http://localhost:${port}`;
+  if (/(\/\/|\.)undefined\./.test(url)) return;
+  setInterval(() => {
+    fetch(url).catch(console.error);
+  }, 5 * 1000 * 60);
 }
 
 async function startPhoenix() {
