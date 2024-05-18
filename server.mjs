@@ -47,7 +47,7 @@ function handleServerError(error, res) {
     }
     res.status(statusCode).send({ error: 'Precondition Required', message: errorMessage });
   } else {
-    res.status(500).send({ error: 'Internal Server Error', message: 'An internal server error occurred' });
+    res.status(500).send({ error: 'Interner Serverfehler', message: 'Ein interner Serverfehler ist aufgetreten' });
   }
 }
 

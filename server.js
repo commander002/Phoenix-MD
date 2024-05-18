@@ -96,7 +96,7 @@ function handleServerError(error, res) {
     }
     res.status(statusCode).send({ error: 'Precondition Required', message: errorMessage });
   } else {
-    res.status(500).send({ error: 'Internal Server Error', message: 'An internal server error occurred' });
+    res.status(500).send({ error: 'Interner Serverfehler', message: 'Ein interner Serverfehler ist aufgetreten' });
   }
 }
 
@@ -218,10 +218,10 @@ async function startPhoenix() {
     if (pea[0].announce == true) {
       //Phoenix.send5ButImg(pea[0].id, `Grop has been *Closed!* Only *Admins* can send Messages!`, `Phoenix Bot`, wm_fatih, [])
 
-      Phoenix.sendMessage(m.chat, { image: wm_fatih, caption: 'Grop has been *Closed!* Only *Admins* can send Messages!' })
+      Phoenix.sendMessage(m.chat, { image: wm_fatih, caption: 'Die Gruppe wurde *geschlossen!* Nur *Admins* können Nachrichten senden!' })
     } else if (pea[0].announce == false) {
       // Phoenix.send5ButImg(pea[0].id, `Grop has been *Opened!* Now *Everyone* can send Messages!`, `Phoenix Bot`, wm_fatih, [])
-      Phoenix.sendMessage(m.chat, { image: wm_fatih, caption: 'Grop has been *Opened!* Now *Everyone* can send Messages!' })
+      Phoenix.sendMessage(m.chat, { image: wm_fatih, caption: 'Die Gruppe wurde *geöffnet!* Jetzt kann *jeder* Nachrichten senden!' })
     } else if (pea[0].restrict == true) {
       //Phoenix.send5ButImg(pea[0].id, `Group Info modification has been *Restricted*, Now only *Admins* can edit Group Info !`, `Phoenix Bot`, wm_fatih, [])
       Phoenix.sendMessage(m.chat, { image: wm_fatih, caption: 'Group Info modification has been *Restricted*, Now only *Admins* can edit Group Info !' })
@@ -230,7 +230,7 @@ async function startPhoenix() {
       Phoenix.sendMessage(m.chat, { image: wm_fatih, caption: 'Group Info modification has been *Un-Restricted*, Now only *Everyone* can edit Group Info !' })
     } else {
       //Phoenix.send5ButImg(pea[0].id, `Group Subject has been uhanged To:\n\n*${pea[0].subject}*`, `Phoenix Bot`, wm_fatih, [])
-      Phoenixtextddfq = `Group Subject has been updated To:\n\n*${pea[0].subject}*`
+      Phoenixtextddfq = `Die Gruppenbeschreibung wurde aktualisiert zu:\n\n*${pea[0].subject}*`
       Phoenix.sendMessage(pea[0].id, { image: wm_fatih, caption: Phoenixtextddfq })
     }
   })
