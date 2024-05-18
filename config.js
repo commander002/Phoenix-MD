@@ -21,15 +21,15 @@ global.prefa = ["/"];                                    //Default prefix here. 
 
 
 //
-global.Owner = ["4917417111681", "4365022989060"];         //If you want singal number so global.Owner = ['916297175943'] Change into your number.
-global.OwnerNumber = ["4917417111681", "4365022989060"];   //If you want singal number so global.Owner = ['916297175943'] Change into your number.
-global.ownertag = ["4917417111681", "4365022989060"];
-global.OwnerName = "Exiqon & Baron";
-global.BotName = "Phoenix-BOT";
-global.packname = "By Phoenix Bot";                             //Do not change.
-global.author = "ig: 6u.cg";                               //Do not change.
+global.Owner = ["923084713397", ];         //If you want singal number so global.Owner = ['916297175943'] Change into your number.
+global.OwnerNumber = ["923084713397", ];   //If you want singal number so global.Owner = ['916297175943'] Change into your number.
+global.ownertag = ["933084713397", "];
+global.OwnerName = "𝘾𝞗𝞛𝞛𝞓𝞜𝘿𝞢𝞒";
+global.BotName = " 🌴 𝙨𝙝𝙖𝙬𝙖𝙧𝙢𝙖 🌴";
+global.packname = "🌴 𝙨𝙝𝙖𝙬𝙖𝙧𝙢𝙖 🌴";                             //Do not change.
+global.author = "𝘾𝞗𝞛𝞛𝞓𝞜𝘿𝞢𝞒";                               //Do not change.
 global.BotSourceCode = "https://github.com/7ucg"; //Do not change.
-global.SupportGroupLink = "https://chat.whatsapp.com/GXJA9IomUhaHyofAT4PlJQ";
+global.SupportGroupLink = "https://telegra.ph/file/60355e3d6dcd92189f079.jpg";
 
 
 //
@@ -45,8 +45,8 @@ global.location = "Deutschland, Unknown";
 global.reactmoji = "💞";
 global.themeemoji = "😂";
 global.vidmenu = { url: 'https://tenor.com/en-CA/view/anonymous-hacker-smooth-gif-10171911193797826570%9D%90%95-12-14' };
-global.websitex = "https://github.com/7ucg/Phoenix-MD";
-global.lolhuman = "Phoenix-BOT";
+global.websitex = "https://github.com";
+global.lolhuman = "𝘾𝞗𝞛𝞛𝞓𝞜𝘿𝞢𝞒";
 
 
 //
