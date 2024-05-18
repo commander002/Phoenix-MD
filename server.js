@@ -102,7 +102,7 @@ function handleServerError(error, res) {
 
 // Define default options
 const opts = {
-  keepalive: true // Assuming true as default value for keepalive
+  keepalive: true 
 };
 
 // Start the server

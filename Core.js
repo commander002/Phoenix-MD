@@ -224,7 +224,7 @@ var yye = tgel.getYear();
 //
 module.exports = Phoenix = async (Phoenix, m, chatUpdate, store) => {
   try {
-    var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectreply.selectedRowId : (m.mtype == 'templateButtonreplyMessage') ? m.message.templateButtonreplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectreply.selectedRowId || m.text) : ''
+    var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectreply.selectedRowId : (m.mtype == 'templateButtonreplyMessage') ? m.message.templateButtonreplyMessage.selectedId : m.mtype === 'InteractiveResponseMessage' ? JSON.parse(m.message.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson)?.id : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectreply.selectedRowId ||  m.message.InteractiveResponseMessage.NativeFlowResponseMessage || m.text) : ''
     var budy = (typeof m.text == 'string' ? m.text : '')
     const prefix = global.prefa
     
@@ -285,6 +285,24 @@ if (isSpam) {
 }
 ////////////////
 
+//============================//
+if(m.mtype === "interactiveResponseMessage"){
+  console.log("interactiveResponseMessage Detected!")   
+  let msg = m.message[m.mtype]  || m.msg
+  if(msg.nativeFlowResponseMessage  && !m.isBot  ){ 
+      let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson) || {}  
+      if(id){
+          let emit_msg = { 
+              key : { ...m.key } , 
+              message:{ extendedTextMessage : { text : id } } ,
+              pushName : m.pushName,
+              messageTimestamp  : m.messageTimestamp || 754785898978
+          }
+          return Phoenix.ev.emit("messages.upsert" , { messages : [ emit_msg ] ,  type : "notify"})
+      }
+  }
+}
+//=======================================
 
 async function loading () {
   var baronlod = [
@@ -995,8 +1013,8 @@ m.reply(`  *━━━〈 𝗣𝗵𝗼𝗲𝗻𝗶𝘅 Ƀøŧ Team🌃  〉━━
 -👑 *Baron*  (Inhaber)
 
 *Teamleitung* :
--👀 *⸸ℑꈤᥴꪊ𝕭ꪊᦓ⸸* (Leitung)
--👀 *(Name)* (Stv.Leitung)
+-👀 *𝔜𝔲𝔧𝔦𝔯𝔬* (Leitung)
+-👀 *⸸ℑꈤᥴꪊ𝕭ꪊᦓ⸸* (Stv.Leitung)
 
 *Community-Manager* : 
 -🤵 *(Name)*
@@ -2230,51 +2248,79 @@ case 'public': {
         break;
 
 
+case 'groupsetting':
+ {
+   let anu = `
+Aloha. @${m.sender.split("@")[0]}
 
-      case 'grupsetting':
-      case 'groupsetting': {
-        if (isBan) return reply(mess.banned);
-        if (isBanChat) return reply(mess.bangc);
-        
-
-        let sections = []
-        let com = [`group open`, `leveling on`, `antilinkgc on`, `antilinktg on`, `antilinktt on`, `antilinkytch on`, `antilinkytvid on`, `antilinkig on`, `antilinkfb on`, `antilinktwit on`, `antilinkall on`, `antiwame on`]
-        let comm = [`group close`, `leveling off`, `antilinkgc off`, `antilinktg off`, `antilinktt off`, `antilinkytch off`, `antilinkytvid off`, `antilinkig on`, `antilinkfb off`, `antilinktwit off`, `antilinkall off`, `antiwame off`]
-        let listnya = [`Group open/close`, `Leveling on/off`, `Antilink Group on/off`, `Antilink Telegram on/off`, `Antilink Tiktok on/off`, `Antilink Youtube Channel on/off`, `Antilink Youtube Video on/off`, `Antilink Instagram on/off`, `Antilink Facebook on/off`, `Antilink Twitter on/off`, `Antilink All on/off`, `Anti Wame on/off`]
-        let suruh = [`Enable`, `Disable`]
-        let fiturname = [`Group`, `Leveling`, `Auto Sticker`, `Antilink Group`, `Antilink Telegram`, `Antilink Tiktok`, `Antilink Youtube Channel`, `Antilink Youtube Video`, `Antilink Instagram`, `Antilink Facebook`, `Antilink Twitter`, `Antilink All`, `Anti Wame`, `Auto Revoke`]
-        let startnum = 0; let startnu = 0; let startn = 0; let start = 0
-        let startnumm = 1
-        for (let x of com) {
-          const yy = {
-            title: `${listnya[startnum++]}`,
-            rows: [
+*[ INFORMATION ]*
+Group Settings Menu`
+let msg = generateWAMessageFromContent(from, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: anu
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: "_Powered by Team-Phoenix_"
+          }),
+          header: proto.Message.InteractiveMessage.Header.create({
+            title: "",
+            subtitle: "",
+            hasMediaAttachment: false
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [
               {
-                title: `${suruh[0]}`,
-                description: `Activate ${fiturname[startnu++]}`,
-                rowId: `${prefix}${x}`
-              }, {
-                title: `${suruh[1]}`,
-                description: `Deactivate ${fiturname[startn++]}`,
-                rowId: `${prefix}${comm[start++]}`
-              }
-            ]
-          }
-          sections.push(yy)
-        }
-        const sendm = Phoenix.sendMessage(
-          from,
-          {
-            text: "Group Settings",
-             footer: BotName,
-            title: "Set your group settings here...",
-            buttonText: "Click Button", 
-            sections 
-          }, { quoted: m }
-        )
-      }
-        break;
+                "name": "single_select",
+                "buttonParamsJson": 
+`{"title":"List Menu ⎙",
+"sections":[{"title":"Phoenix-Bot",
+"highlight_label": "Favorite Request",
+"rows":[{"header":"",
+"title":"Group",
+"description":"Group open/close",
+"id":"${prefix}group"},
+{"header":"",
+"title":"Antilink",
+"description":"Antilinkall on/off",
+"id":"${prefix}antilinkall on "},
+{"header":"",
+"title":"Hidetag",
+"id":"${prefix}hidetag"}]
+}]
+}`
+         },
+           ],
+           
+          
+          }),
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  //forwardingScore: 999,
+                  //isForwarded: false,
+                forwardedNewsletterMessageInfo: {
+                 //newsletterJid: '120363236214682540@newsletter',
+                  //newsletterName: 'Phoenix-Bot',
+                  serverMessageId: 143
+                }
+                }
+        })
+    }
+  }
+}, {})
 
+await Phoenix.relayMessage(msg.key.remoteJid, msg.message, {
+  messageId: msg.key.id
+})
+
+}
+break
 
       /*
       case 'animesearchxxx': case 'anime':{
@@ -3000,7 +3046,7 @@ case "speed":
 
           if (AntiLinkAll) return reply('Bereits aktiviert');
           ntilinkall.push(from);
-          reply('Enabled all antilink!');
+          reply('Antilink Aktiviert!');
           var groupe = await Phoenix.groupMetadata(from);
           var members = groupe['participants'];
           var mems = [];
@@ -3014,7 +3060,7 @@ case "speed":
           ntilinkall.splice(off, 1);
           reply('Disabled all antilink!');
         } else {
-          m.reply(`Please use '${prefix}antilinkall on' to enable the Antilink system or '${prefix}antilinkall off' to disable it.`);
+          m.reply(`Bitte verwende '${prefix}antilinkall on", um Antilink zu aktivieren, oder '${prefix}antilinkall off' um Antilink zu deaaktivieren.`);
         }
       }
         break;
